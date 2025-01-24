@@ -5,9 +5,10 @@ import dotenv from "dotenv";
 import connectDB from "./utils/db.js";
 import userRoute from "./routes/user.route.js";
 import postRoute from './routes/post.route.js'
+import { app, server } from "./socket/socket.js";
 dotenv.config();
 
-const app = express();
+
 
 const PORT = process.env.PORT || 8000;
 
@@ -35,7 +36,7 @@ app.use("/api/v1/user", userRoute);
 
 app.use("/api/v1/post", postRoute);
 
-app.listen(PORT, async () => {
+server.listen(PORT, async () => {
   await connectDB();
   console.log(`Server is running on port ${PORT}`);
 });

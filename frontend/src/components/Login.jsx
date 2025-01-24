@@ -96,7 +96,7 @@ function Login() {
         )}
         <span className="text-center">
           Doesn't have an account?{" "}
-          <Link to="/login" className="text-blue-600">
+          <Link to="/signUp" className="text-blue-600">
             Signup
           </Link>
         </span>

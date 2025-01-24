@@ -7,12 +7,12 @@ const commentSchema = new mongoose.Schema({
     },
     author:{
         type: mongoose.Schema.Types.ObjectId,
-        req: 'User',
+        ref: 'User',
         required: true,
     },
     post:{
         type: mongoose.Schema.Types.ObjectId,
-        req: 'Post',
+        ref: 'Post',
         required: 'true'
     }
 })

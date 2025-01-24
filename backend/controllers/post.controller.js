@@ -9,7 +9,7 @@ export const addNewPost = async (req, res) => {
     const { caption } = req.body;
     const image = req.file;
     const authorId = req.id;
-    console.log("addNewPOst");
+
     if (!image)
       return res.status(400).json({
         message: "Image required",
@@ -32,7 +32,7 @@ export const addNewPost = async (req, res) => {
       image: cloudResponse.secure_url,
       author: authorId,
     });
-    console.log("ding ding");
+
     const user = await User.findById(authorId);
     if (user) {
       user.posts.push(post._id);
@@ -59,7 +59,7 @@ export const getAllPost = async (req, res) => {
       .populate({ path: "author", select: "userName profilePicture" })
       .populate({
         path: "comments",
-        sort: { createdAt: -1 },
+        options: { sort: { createdAt: -1 } },
         populate: {
           path: "author",
           select: "userName profilePicture",
@@ -86,12 +86,12 @@ export const getUserPost = async (req, res) => {
       })
       .populate({
         path: "comments",
-        sort: { createdAt: -1 },
+        options: {sort:{ createdAt: -1} },
         populate: {
           path: "author",
-          select: "userName, profilePicture",
+          select: "userName profilePicture",
         },
-      });
+      }).lean();
     return res.status(200).json({
       posts,
       success: true,
@@ -113,7 +113,7 @@ export const likePost = async (req, res) => {
 
     // like logic started
     await post.updateOne({ $addToSet: { likes: likeKrneWalaUserKiId } });
-    await post.save();
+      await post.save();
 
     // implement socket io for real time notification
     // const user = await User.findById(likeKrneWalaUserKiId).select(
@@ -172,6 +172,7 @@ export const dislikePost = async (req, res) => {
 };
 export const addComment = async (req,res) =>{
     try {
+
         const postId = req.params.id;
         const commentKrneWalaUserKiId = req.id;
 

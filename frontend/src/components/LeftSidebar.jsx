@@ -15,7 +15,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setAuthUser } from "@/redux/authSlice";
 import CreatePost from "./CreatePost";
-
+import { setPosts, setSelectedPost } from "@/redux/postSlice";
 
 function LeftSidebar() {
   const navigate = useNavigate();
@@ -74,6 +74,8 @@ function LeftSidebar() {
       console.log(response);
       if (response.data.success) {
         dispatch(setAuthUser(null));
+        dispatch(setSelectedPost(null));
+        dispatch(setPosts([]));
         navigate("/login");
         toast.success(response.data.message);
       }
@@ -86,7 +88,9 @@ function LeftSidebar() {
     if (textType === "Logout") logoutHandler();
     else if (textType === "Create") {
       setOpen(true);
-    }
+    } else if (textType === "Profile") {
+      navigate(`/profile/${user?._id}`);
+    } else if (textType === "Home") navigate(`/`);
   };
   return (
     <div className="fixed top-0 z-10 left-0 px-4 border-r border-gray-300 w-[16%] h-screen">

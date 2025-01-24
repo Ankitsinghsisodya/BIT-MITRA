@@ -1,9 +1,9 @@
 import bcrypt from "bcryptjs";
 import { User } from "../models/user.model.js";
 import cloudinary from "../utils/cloudinary.js";
-import jwt from 'jsonwebtoken'
+import jwt from "jsonwebtoken";
 import { Post } from "../models/post.model.js";
-import getDataUri from '../utils/dataUri.js'
+import getDataUri from "../utils/dataUri.js";
 
 export const signUp = async (req, res) => {
   try {
@@ -20,7 +20,6 @@ export const signUp = async (req, res) => {
         success: false,
       });
     const hashedPassword = await bcrypt.hash(password, 10);
-
 
     const newUser = await User.create({
       userName,
@@ -60,7 +59,7 @@ export const login = async (req, res) => {
         message: "First make a account to login",
       });
     }
-    console.log(user.userName);
+
     if (!(await bcrypt.compare(password, user.password))) {
       return res.status(401).json({
         success: false,
@@ -114,7 +113,8 @@ export const logout = async (req, res) => {
 export const getProfile = async (req, res) => {
   try {
     const userId = req.params.id;
-    let user = await User.findById(userId).select('-password')
+    let user = await User.findById(userId)
+      .select("-password")
       .populate({ path: "posts", createdAt: -1 })
       .populate({ path: "bookmarks" });
     return res.status(200).json({
@@ -128,7 +128,7 @@ export const getProfile = async (req, res) => {
 
 export const editProfile = async (req, res) => {
   try {
-    const userId  = req.id;
+    const userId = req.id;
     // console.log(req);
 
     const { bio, gender } = req.body;
@@ -141,8 +141,7 @@ export const editProfile = async (req, res) => {
     }
 
     const user = await User.findById(userId).select("-password");
-    console.log(user);
-    console.log(userId);
+
     if (!user) {
       return res.status(401).json({
         message: "User not found",
@@ -168,7 +167,7 @@ export const editProfile = async (req, res) => {
 
 export const getSuggestedUsers = async (req, res) => {
   try {
-    const SuggestedUsers = await User.findById({ $ne: req.id }).select(
+    const SuggestedUsers = await User.find({ _id: { $ne: req.id } }).select(
       "-password"
     );
 
@@ -176,7 +175,7 @@ export const getSuggestedUsers = async (req, res) => {
       return res.status(400).json({
         message: "Currently do not have any users",
       });
-
+    console.log(SuggestedUsers);
     return res.status(200).json({
       success: true,
       users: SuggestedUsers,
@@ -205,9 +204,9 @@ export const followOrUnfollow = async (req, res) => {
         success: false,
         message: "User not found",
       });
-      console.log('ankit');
+
     // now mai check kruna ki follow krna h ki nahi
-    const isFollowing =  user.following.includes(jiskoFollowKrunga);
+    const isFollowing = user.following.includes(jiskoFollowKrunga);
     console.log(isFollowing);
     if (isFollowing) {
       // unfollow logic
@@ -233,7 +232,6 @@ export const followOrUnfollow = async (req, res) => {
         message: "Unfollowed Successfully",
         Success: true,
       });
-
     } else {
       // follow logic
       await Promise.all([
@@ -254,7 +252,7 @@ export const followOrUnfollow = async (req, res) => {
           }
         ),
       ]);
-      
+
       return res.status(200).json({
         message: "followed Successfully",
         Success: true,
