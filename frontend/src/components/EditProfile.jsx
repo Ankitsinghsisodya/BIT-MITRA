@@ -1,9 +1,12 @@
-import React, { useRef, useState } from "react";
+import { setAuthUser } from "@/redux/authSlice";
+import axios from "axios";
+import { Loader2 } from "lucide-react";
+import { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
-import { Link, useNavigate } from "react-router-dom";
 import { Button } from "./ui/button";
-import { Textarea } from "./ui/textarea";
 import {
   Select,
   SelectContent,
@@ -11,10 +14,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./ui/select";
-import axios from "axios";
-import { Loader2 } from "lucide-react";
-import { setAuthUser } from "@/redux/authSlice";
-import { toast } from "sonner";
+import { Textarea } from "./ui/textarea";
 
 function EditProfile() {
   const { user } = useSelector((store) => store.auth);
@@ -43,11 +43,12 @@ function EditProfile() {
     const formData = new FormData();
     formData.append("bio", input.bio);
     formData.append("gender", input.gender);
-    if (input.profilePicture) formData.append("profilePicture", input.profilePicture);
+    if (input.profilePicture)
+      formData.append("profilePicture", input.profilePicture);
     try {
       setLoading(true);
       const response = await axios.post(
-        "http://localhost:8000/api/v1/user/profile/edit",
+        "https://bit-mitra.onrender.com//api/v1/user/profile/edit",
         formData,
         {
           headers: {
@@ -63,15 +64,14 @@ function EditProfile() {
           profilePicture: response.data.user?.profilePicture,
           gender: response.data.user?.gender,
         };
-        dispatch(setAuthUser(updatedUserData))
-        navigate(`/profile/${user._id}`)
+        dispatch(setAuthUser(updatedUserData));
+        navigate(`/profile/${user._id}`);
         toast.success(response.data.message);
       }
     } catch (error) {
       console.log(error);
-    }
-    finally{
-      setLoading(false)
+    } finally {
+      setLoading(false);
     }
   };
   return (
@@ -97,7 +97,12 @@ function EditProfile() {
             </div>
           </div>
 
-          <input ref={imageref} onChange={fileChangeHandler} type="file" className="hidden" />
+          <input
+            ref={imageref}
+            onChange={fileChangeHandler}
+            type="file"
+            className="hidden"
+          />
           <Button
             onClick={() => imageref?.current.click()}
             className="bg-[#0095F6] h-8 hover:bg-[#2889c9]"

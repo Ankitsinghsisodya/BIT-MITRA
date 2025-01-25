@@ -1,13 +1,12 @@
-import React, { useEffect } from "react";
+import axios from "axios";
+import { Loader2 } from "lucide-react";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "sonner";
+import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
-import { Button } from "./ui/button";
-import { useState } from "react";
-import axios from "axios";
-import { toast } from "sonner";
-import { Link, useNavigate } from "react-router-dom";
-import { Loader2 } from "lucide-react";
-import { useSelector } from "react-redux";
 
 function SignUp() {
   const [input, setInput] = useState({
@@ -27,7 +26,7 @@ function SignUp() {
     try {
       setLoading(true);
       const res = await axios.post(
-        "http://localhost:8000/api/v1/user/signUp",
+        "https://bit-mitra.onrender.com//api/v1/user/signUp",
         input,
         {
           headers: {

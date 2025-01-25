@@ -9,7 +9,7 @@ const useGetAllPost = () => {
     const fetchAllPost = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8000/api/v1/post/all",
+          "https://bit-mitra.onrender.com//api/v1/post/all",
           { withCredentials: true }
         );
         if (response.data.success) {

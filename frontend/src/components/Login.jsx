@@ -1,15 +1,13 @@
-import React, { useEffect } from "react";
+import { setAuthUser } from "@/redux/authSlice";
+import axios from "axios";
+import { Loader2 } from "lucide-react";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "sonner";
+import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
-import { Button } from "./ui/button";
-import { useState } from "react";
-import axios from "axios";
-import { toast } from "sonner";
-import { Link } from "react-router-dom";
-import { Loader2 } from "lucide-react";
-import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { setAuthUser } from "@/redux/authSlice";
 
 function Login() {
   const dispatch = useDispatch();
@@ -30,7 +28,7 @@ function Login() {
     try {
       setLoading(true);
       const res = await axios.post(
-        "http://localhost:8000/api/v1/user/login",
+        "https://bit-mitra.onrender.com//api/v1/user/login",
         input,
         {
           headers: {

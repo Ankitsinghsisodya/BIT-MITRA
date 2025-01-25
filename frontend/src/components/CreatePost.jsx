@@ -1,14 +1,14 @@
-import React, { useRef, useState } from "react";
-import { Dialog, DialogContent, DialogHeader } from "./ui/dialog";
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
-import { Textarea } from "./ui/textarea";
-import { Button } from "./ui/button";
 import { readFileAsDataURL } from "@/lib/utils";
-import { Loader2 } from "lucide-react";
-import { toast } from "sonner";
-import axios from "axios";
-import { useDispatch, useSelector } from "react-redux";
 import { setPosts } from "@/redux/postSlice";
+import axios from "axios";
+import { Loader2 } from "lucide-react";
+import { useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "sonner";
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import { Button } from "./ui/button";
+import { Dialog, DialogContent, DialogHeader } from "./ui/dialog";
+import { Textarea } from "./ui/textarea";
 
 function CreatePost({ open, setOpen }) {
   const imageRef = useRef();
@@ -26,7 +26,7 @@ function CreatePost({ open, setOpen }) {
     try {
       setLoading(true);
       const response = await axios.post(
-        "http://localhost:8000/api/v1/post/addpost",
+        "https://bit-mitra.onrender.com//api/v1/post/addpost",
         formData,
         {
           headers: {
@@ -35,7 +35,6 @@ function CreatePost({ open, setOpen }) {
           withCredentials: true,
         }
       );
-
 
       if (response.data.success) {
         dispatch(setPosts([response.data.post, ...posts]));

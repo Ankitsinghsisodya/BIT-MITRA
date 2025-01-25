@@ -1,14 +1,14 @@
-import { Link } from "react-router-dom";
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
-import { Dialog, DialogContent, DialogTrigger } from "./ui/dialog";
-import React, { useEffect, useState } from "react";
-import { MoreHorizontal } from "lucide-react";
-import { Button } from "./ui/button";
-import { useDispatch, useSelector } from "react-redux";
-import Comment from "./Comment";
-import axios from "axios";
-import { toast } from "sonner";
 import { setPosts } from "@/redux/postSlice";
+import axios from "axios";
+import { MoreHorizontal } from "lucide-react";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import { toast } from "sonner";
+import Comment from "./Comment";
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import { Button } from "./ui/button";
+import { Dialog, DialogContent, DialogTrigger } from "./ui/dialog";
 
 function CommentDialog({ open, setOpen }) {
   const [text, setText] = useState("");
@@ -31,10 +31,9 @@ function CommentDialog({ open, setOpen }) {
   };
 
   const sendMessageHandler = async () => {
-
     try {
       const res = await axios.post(
-        `http://localhost:8000/api/v1/post/${selectedPost?._id}/comment`,
+        `https://bit-mitra.onrender.com//api/v1/post/${selectedPost?._id}/comment`,
         { text },
         {
           headers: {

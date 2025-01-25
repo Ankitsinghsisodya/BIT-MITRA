@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { setSelectedUser } from "@/redux/authSlice";
-import { Input } from "./ui/input";
-import { Button } from "./ui/button";
-import { MessageCircleCode } from "lucide-react";
-import Messages from "./Messages";
-import axios from "axios";
 import { setMessages } from "@/redux/chatSlice";
+import axios from "axios";
+import { MessageCircleCode } from "lucide-react";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import Messages from "./Messages";
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import { Button } from "./ui/button";
+import { Input } from "./ui/input";
 
 function ChatPage() {
   const [textMessage, setTextMessage] = useState("");
@@ -20,7 +20,7 @@ function ChatPage() {
     try {
       console.log("dumb");
       const response = await axios.post(
-        `http://localhost:8000/api/v1/message/send/${receiverId}`,
+        `https://bit-mitra.onrender.com//api/v1/message/send/${receiverId}`,
         {
           textMessage,
         },
