@@ -71,7 +71,7 @@ export const login = async (req, res) => {
       username: user.userName,
       email: user.email,
       profilePicture: user.profilePicture,
-      bio: user.bio,
+      bio: user?.bio,
       followers: user.followers,
       following: user.following,
       posts: user.posts,
@@ -149,7 +149,7 @@ export const editProfile = async (req, res) => {
       });
     }
 
-    if (bio) user.bio = bio;
+    if (bio) user?.bio = bio;
     if (gender) user.gender = gender;
     if (profilePicture) user.profilePicture = cloudResponse.secure_url;
 
