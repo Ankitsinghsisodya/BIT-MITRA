@@ -26,7 +26,7 @@ function CreatePost({ open, setOpen }) {
     try {
       setLoading(true);
       const response = await axios.post(
-        "http://localhost:8000//api/v1/post/addpost",
+        "https://bit-mitra.onrender.com/login//api/v1/post/addpost",
         formData,
         {
           headers: {
