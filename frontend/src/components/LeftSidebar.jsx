@@ -31,7 +31,7 @@ const LeftSidebar = () => {
   const logoutHandler = async () => {
     try {
       const res = await axios.get(
-        "https://bit-mitra.onrender.com//api/v1/user/logout",
+        "https://bit-mitra.onrender.com/api/v1/user/logout",
         {
           withCredentials: true,
         }

@@ -20,7 +20,7 @@ function ChatPage() {
     try {
       console.log("dumb");
       const response = await axios.post(
-        `https://bit-mitra.onrender.com//api/v1/message/send/${receiverId}`,
+        `https://bit-mitra.onrender.com/api/v1/message/send/${receiverId}`,
         {
           textMessage,
         },

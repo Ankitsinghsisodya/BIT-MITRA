@@ -19,7 +19,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(urlencoded({ extended: true }));
 const CorsOptions = {
-  origin: "https://bit-mitra.onrender.com/",
+  origin: "https://bit-mitra.onrender.com",
   credentials: true,
 };
 
