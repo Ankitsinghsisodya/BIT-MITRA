@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { Button } from "./ui/button";
@@ -7,6 +7,7 @@ import axios from "axios";
 import { toast } from "sonner";
 import { Link, useNavigate } from "react-router-dom";
 import { Loader2 } from "lucide-react";
+import { useSelector } from "react-redux";
 
 function SignUp() {
   const [input, setInput] = useState({
@@ -16,6 +17,7 @@ function SignUp() {
   });
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { user } = useSelector((store) => store.auth);
   const changeEventHandler = (e) => {
     setInput({ ...input, [e.target.name]: e.target.value });
   };
@@ -50,6 +52,11 @@ function SignUp() {
       setLoading(false);
     }
   };
+  useEffect(() => {
+    if (user) {
+      navigate("/");
+    }
+  }, []);
   return (
     <div className="flex items-center w-screen h-screen justify-center">
       <form
@@ -63,7 +70,7 @@ function SignUp() {
           </p>
         </div>
         <div>
-          <Label className=" font-medium">Username</Label>
+          <Label className=" font-medium">UserName</Label>
           <Input
             type="text"
             name="userName"
@@ -101,7 +108,12 @@ function SignUp() {
         ) : (
           <Button type="submit">Signup</Button>
         )}
-        <span className="text-center">Already have an account? <Link to="/login"className="text-blue-600">Login</Link></span>
+        <span className="text-center">
+          Already have an account?{" "}
+          <Link to="/login" className="text-blue-600">
+            Login
+          </Link>
+        </span>
       </form>
     </div>
   );

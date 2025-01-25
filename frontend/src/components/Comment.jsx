@@ -3,7 +3,7 @@ import React from 'react'
 import { AvatarFallback, AvatarImage } from './ui/avatar'
 
 function Comment({comment}) {
-    console.log('comment', comment);
+
   return (
     <div className='my-2'>
          <div className='flex gap-3 items-center'>

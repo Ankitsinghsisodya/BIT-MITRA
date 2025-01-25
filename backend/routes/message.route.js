@@ -1,21 +1,11 @@
 import express from "express";
-
-import isAuthenticated from "../middlewares/isAuthenticated.js";
+ import isAuthenticated from "../middlewares/isAuthenticated.js";
 import upload from "../middlewares/multer.js";
+import { getMessage, sendMessage } from "../controllers/message.controller.js";
 
 const router = express.Router();
 
-router.post("/signUp", signUp);
-router.post("/login", login);
-router.get("/logout", logout);
-router.get("/:id/profile", isAuthenticated, getProfile);
-router.post(
-  "/profile/edit",
-  isAuthenticated,
-  upload.single("profilePicture"),
-  editProfile
-);
-router.get("/suggested", isAuthenticated, getSuggestedUsers);
-router.post("/followorunfollow/:id", isAuthenticated, followOrUnfollow);
-
+router.route('/send/:id').post(isAuthenticated, sendMessage);
+router.route('/all/:id').get(isAuthenticated, getMessage);
+ 
 export default router;

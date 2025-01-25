@@ -90,7 +90,7 @@ function EditProfile() {
             </Avatar>
 
             <div>
-              <h1 className="font-bold text-sm">{user?.username}</h1>
+              <h1 className="font-bold text-sm">{user?.userName}</h1>
               <span className="text-gray-600">
                 {user?.bio || "Bio here ..."}
               </span>

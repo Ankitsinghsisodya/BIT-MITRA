@@ -188,9 +188,9 @@ export const getSuggestedUsers = async (req, res) => {
 export const followOrUnfollow = async (req, res) => {
   try {
     const followKrneWala = req.id;
-    console.log(followKrneWala);
+
     const jiskoFollowKrunga = req.params.id;
-    console.log(jiskoFollowKrunga);
+
     if (followKrneWala === jiskoFollowKrunga)
       return res.staus(401).json({
         success: false,
@@ -207,7 +207,7 @@ export const followOrUnfollow = async (req, res) => {
 
     // now mai check kruna ki follow krna h ki nahi
     const isFollowing = user.following.includes(jiskoFollowKrunga);
-    console.log(isFollowing);
+
     if (isFollowing) {
       // unfollow logic
       await Promise.all([

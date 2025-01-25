@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { Button } from "./ui/button";
@@ -8,23 +8,25 @@ import { toast } from "sonner";
 import { Link } from "react-router-dom";
 import { Loader2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setAuthUser } from "@/redux/authSlice";
 
 function Login() {
   const dispatch = useDispatch();
+
   const [input, setInput] = useState({
     email: "",
     password: "",
   });
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { user } = useSelector((store) => store.auth);
   const changeEventHandler = (e) => {
     setInput({ ...input, [e.target.name]: e.target.value });
   };
   const LoginHandler = async (e) => {
     e.preventDefault();
-    console.log(input);
+
     try {
       setLoading(true);
       const res = await axios.post(
@@ -38,7 +40,7 @@ function Login() {
         }
       );
       if (res.data.success) {
-        dispatch(setAuthUser(res.data.user))
+        dispatch(setAuthUser(res.data.user));
         navigate("/");
         toast.success(res.data.message);
         setInput({
@@ -53,6 +55,12 @@ function Login() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    if (user) {
+      navigate("/");
+    }
+  }, []);
   return (
     <div className="flex items-center w-screen h-screen justify-center">
       <form

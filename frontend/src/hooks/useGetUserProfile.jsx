@@ -15,7 +15,7 @@ const useGetUserProfile = (userId) => {
           `http://localhost:8000/api/v1/user/${userId}/profile`,
           { withCredentials: true }
         );
-        console.log(res);
+
         if (res.data.success) {
           dispatch(setUserProfile(res.data.user));
 

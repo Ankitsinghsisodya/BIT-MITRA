@@ -14,7 +14,7 @@ const useGetSuggestedUsers = () => {
           "http://localhost:8000/api/v1/user//suggested",
           { withCredentials: true }
         );
-        console.log('useGetSuggestedUsers::', res);
+
         if (res.data.success) {
           dispatch(setSuggestedUsers(res.data.users));
         }
