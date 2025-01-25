@@ -9,7 +9,7 @@ import Login from "./components/Login";
 import MainLayout from "./components/MainLayout";
 import Profile from "./components/Profile";
 import ProtectedRoutes from "./components/ProtectedRoutes";
-import Signup from "./components/Signup";
+import SignUp from "./components/SignUp.jsx";
 import { setOnlineUsers } from "./redux/chatSlice";
 import { setLikeNotification } from "./redux/rtnSlice";
 import { setSocket } from "./redux/socketSlice";
@@ -64,7 +64,7 @@ const browserRouter = createBrowserRouter([
   },
   {
     path: "/signup",
-    element: <Signup />,
+    element: <SignUp />,
   },
 ]);
 
