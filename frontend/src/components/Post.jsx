@@ -34,7 +34,7 @@ const Post = ({ post }) => {
     try {
       const action = liked ? "dislike" : "like";
       const res = await axios.get(
-        `https://bit-mitra.onrender.com//api/v1/post/${post._id}/${action}`,
+        `http://localhost:8000//api/v1/post/${post?._id}/${action}`,
         { withCredentials: true }
       );
       console.log(res.data);
@@ -45,12 +45,12 @@ const Post = ({ post }) => {
 
         // apne post ko update krunga
         const updatedPostData = posts.map((p) =>
-          p._id === post._id
+          p?._id === post?._id
             ? {
                 ...p,
                 likes: liked
-                  ? p.likes.filter((id) => id !== user._id)
-                  : [...p.likes, user._id],
+                  ? p.likes.filter((id) => id !== user?._id)
+                  : [...p.likes, user?._id],
               }
             : p
         );
@@ -65,7 +65,7 @@ const Post = ({ post }) => {
   const commentHandler = async () => {
     try {
       const res = await axios.post(
-        `https://bit-mitra.onrender.com//api/v1/post/${post._id}/comment`,
+        `http://localhost:8000//api/v1/post/${post?._id}/comment`,
         { text },
         {
           headers: {
@@ -80,7 +80,7 @@ const Post = ({ post }) => {
         setComment(updatedCommentData);
 
         const updatedPostData = posts.map((p) =>
-          p._id === post._id ? { ...p, comments: updatedCommentData } : p
+          p?._id === post?._id ? { ...p, comments: updatedCommentData } : p
         );
 
         dispatch(setPosts(updatedPostData));
@@ -95,7 +95,7 @@ const Post = ({ post }) => {
   const deletePostHandler = async () => {
     try {
       const res = await axios.delete(
-        `https://bit-mitra.onrender.com///api/v1/post/delete/${post?._id}`,
+        `http://localhost:8000///api/v1/post/delete/${post?._id}`,
         { withCredentials: true }
       );
       if (res.data.success) {
@@ -114,7 +114,7 @@ const Post = ({ post }) => {
   const bookmarkHandler = async () => {
     try {
       const res = await axios.get(
-        `https://bit-mitra.onrender.com///api/v1/post/${post?._id}/bookmark`,
+        `http://localhost:8000///api/v1/post/${post?._id}/bookmark`,
         { withCredentials: true }
       );
       if (res.data.success) {
@@ -134,7 +134,7 @@ const Post = ({ post }) => {
           </Avatar>
           <div className="flex items-center gap-3">
             <h1>{post.author?.userName}</h1>
-            {user?._id === post.author._id && (
+            {user?._id === post.author?._id && (
               <Badge variant="secondary">Author</Badge>
             )}
           </div>
@@ -156,7 +156,7 @@ const Post = ({ post }) => {
             <Button variant="ghost" className="cursor-pointer w-fit">
               Add to favorites
             </Button>
-            {user && user?._id === post?.author._id && (
+            {user && user?._id === post?.author?._id && (
               <Button
                 onClick={deletePostHandler}
                 variant="ghost"

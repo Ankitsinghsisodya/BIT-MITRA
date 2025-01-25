@@ -20,7 +20,7 @@ function ChatPage() {
     try {
       console.log("dumb");
       const response = await axios.post(
-        `https://bit-mitra.onrender.com//api/v1/message/send/${receiverId}`,
+        `http://localhost:8000//api/v1/message/send/${receiverId}`,
         {
           textMessage,
         },
@@ -99,10 +99,10 @@ function ChatPage() {
               className="flex-1 mr-2 focus-visible:ring-offset-transparent"
               placeholder="Messages..."
               onKeyDown={(e) => {
-                if (e.key === "Enter") sendMessageHandler(selectedUser._id);
+                if (e.key === "Enter") sendMessageHandler(selectedUser?._id);
               }}
             />
-            <Button onClick={() => sendMessageHandler(selectedUser._id)}>
+            <Button onClick={() => sendMessageHandler(selectedUser?._id)}>
               Send
             </Button>
           </div>

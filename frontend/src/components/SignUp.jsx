@@ -26,7 +26,7 @@ function SignUp() {
     try {
       setLoading(true);
       const res = await axios.post(
-        "https://bit-mitra.onrender.com//api/v1/user/signUp",
+        "http://localhost:8000//api/v1/user/signUp",
         input,
         {
           headers: {

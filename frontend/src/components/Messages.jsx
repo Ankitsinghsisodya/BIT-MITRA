@@ -32,7 +32,7 @@ function Messages({ selectedUser }) {
       <div className="flex flex-col gap-3">
         {messages?.map((msg) => {
           return (
-            <div key={msg._id} className={`flex ${msg.senderId === user?._id? 'justify-end' : 'justify-start'}`}>
+            <div key={msg?._id} className={`flex ${msg.senderId === user?._id? 'justify-end' : 'justify-start'}`}>
               <div className={`p-2 rounded-lg max-w-xs break-word ${msg.senderId === user?._id ? 'bg-blue-500 text-white' : 'bg-gray-200 text-black'}`}>{msg.message}</div>
             </div>
           );

@@ -33,7 +33,7 @@ function CommentDialog({ open, setOpen }) {
   const sendMessageHandler = async () => {
     try {
       const res = await axios.post(
-        `https://bit-mitra.onrender.com//api/v1/post/${selectedPost?._id}/comment`,
+        `http://localhost:8000//api/v1/post/${selectedPost?._id}/comment`,
         { text },
         {
           headers: {
@@ -46,7 +46,7 @@ function CommentDialog({ open, setOpen }) {
         const updatedCommentData = [...comments, res.data.comment];
         setComments(updatedCommentData);
         const updatedPostsData = posts.map((p) =>
-          p._id === selectedPost._id
+          p._id === selectedPost?._id
             ? { ...p, comments: updatedCommentData }
             : p
         );

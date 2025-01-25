@@ -9,7 +9,7 @@ const useGetUserProfile = (userId) => {
     const fetchUserProfile = async () => {
       try {
         const res = await axios.get(
-          `https://bit-mitra.onrender.com//api/v1/user/${userId}/profile`,
+          `http://localhost:8000//api/v1/user/${userId}/profile`,
           { withCredentials: true }
         );
 

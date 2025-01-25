@@ -36,7 +36,7 @@ export const addNewPost = async (req, res) => {
 
     const user = await User.findById(authorId);
     if (user) {
-      user.posts.push(post._id);
+      user.posts.push(post?._id);
       await user.save();
     }
 
@@ -194,7 +194,7 @@ export const addComment = async (req,res) =>{
             select:"userName profilePicture"
         });
         
-        post.comments.push(comment._id);
+        post.comments.push(comment?._id);
         await post.save();
 
         return res.status(201).json({
@@ -264,9 +264,9 @@ export const bookmarkPost = async (req, res) => {
         .json({ message: "Post not found", success: false });
 
     const user = await User.findById(authorId);
-    if (user.bookmarks.includes(post._id)) {
+    if (user.bookmarks.includes(post?._id)) {
       // already bookmarked -> remove from the bookmark
-      await user.updateOne({ $pull: { bookmarks: post._id } });
+      await user.updateOne({ $pull: { bookmarks: post?._id } });
       await user.save();
       return res.status(200).json({
         type: "unsaved",
@@ -275,7 +275,7 @@ export const bookmarkPost = async (req, res) => {
       });
     } else {
       // bookmark krna pdega
-      await user.updateOne({ $addToSet: { bookmarks: post._id } });
+      await user.updateOne({ $addToSet: { bookmarks: post?._id } });
       await user.save();
       return res
         .status(200)

@@ -48,7 +48,7 @@ function EditProfile() {
     try {
       setLoading(true);
       const response = await axios.post(
-        "https://bit-mitra.onrender.com//api/v1/user/profile/edit",
+        "http://localhost:8000//api/v1/user/profile/edit",
         formData,
         {
           headers: {
@@ -65,7 +65,7 @@ function EditProfile() {
           gender: response.data.user?.gender,
         };
         dispatch(setAuthUser(updatedUserData));
-        navigate(`/profile/${user._id}`);
+        navigate(`/profile/${user?._id}`);
         toast.success(response.data.message);
       }
     } catch (error) {

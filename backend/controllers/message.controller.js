@@ -23,7 +23,7 @@ export const sendMessage = async (req,res) => {
             receiverId,
             message
         });
-        if(newMessage) conversation.messages.push(newMessage._id);
+        if(newMessage) conversation.messages.push(newMessage?._id);
 
         await Promise.all([conversation.save(),newMessage.save()])
 
