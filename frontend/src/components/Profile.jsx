@@ -109,9 +109,6 @@ function Profile() {
                   <AtSign />{" "}
                   <span className="pl-1">{userProfile?.userName}</span>
                 </Badge>
-                <span>Learn code with Ankit</span>
-                <span>Learn code with Ankit</span>
-                <span>Learn code with Ankit</span>
               </div>
             </div>
           </section>
