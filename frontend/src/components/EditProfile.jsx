@@ -48,7 +48,7 @@ function EditProfile() {
     try {
       setLoading(true);
       const response = await axios.post(
-        "https://bit-mitra.onrender.com/login//api/v1/user/profile/edit",
+        "https://bit-mitra.onrender.com//api/v1/user/profile/edit",
         formData,
         {
           headers: {

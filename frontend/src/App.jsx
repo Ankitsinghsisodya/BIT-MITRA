@@ -75,7 +75,7 @@ function App() {
 
   useEffect(() => {
     if (user) {
-      const socketio = io("https://bit-mitra.onrender.com/login/", {
+      const socketio = io("https://bit-mitra.onrender.com/", {
         query: {
           userId: user?._id,
         },

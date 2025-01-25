@@ -9,7 +9,7 @@ const useGetSuggestedUsers = () => {
     const fetchSuggestedUsers = async () => {
       try {
         const res = await axios.get(
-          "https://bit-mitra.onrender.com/login//api/v1/user//suggested",
+          "https://bit-mitra.onrender.com//api/v1/user//suggested",
           { withCredentials: true }
         );
 
