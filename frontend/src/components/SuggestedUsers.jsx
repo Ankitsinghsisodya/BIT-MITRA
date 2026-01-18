@@ -4,40 +4,60 @@ import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 
 function SuggestedUsers() {
   const { suggestedUsers } = useSelector((store) => store.auth);
-  // console.log("SuggestedUsers", suggestedUsers);
+  
   return (
-    <div className="my-10 ">
-      <div className="flex items-center justify-between text-sm">
-        <h1 className="font-semibold text-gray-600">Suggested for you</h1>
-        <span className="cursor-pointer font-medium">See All</span>
+    <div className="space-y-4">
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <h3 className="font-semibold text-sm text-muted-foreground">
+          Suggested for you
+        </h3>
+        <button className="text-xs font-semibold text-foreground hover:text-muted-foreground transition-colors">
+          See All
+        </button>
       </div>
-      {suggestedUsers?.map((user) => {
-        return (
-          <div key={user?._id} className="flex items-center justify-between my-5">
-            <div className="flex items-center gap-2">
-              <Link to={`/profile/${user?._id}`}>
-                <Avatar>
-                  <AvatarImage
-                    src={user?.profilePicture}
-                    alt="post_image"
-                    className="w-5 h-5 rounded-full"
-                  />
-                  <AvatarFallback>CN</AvatarFallback>
-                </Avatar>
+
+      {/* Users List */}
+      <div className="space-y-3">
+        {suggestedUsers?.map((user) => (
+          <div
+            key={user?._id}
+            className="flex items-center gap-3 group"
+          >
+            <Link to={`/profile/${user?._id}`}>
+              <Avatar className="w-11 h-11 ring-2 ring-transparent group-hover:ring-primary/20 transition-all ring-offset-2 ring-offset-background">
+                <AvatarImage src={user?.profilePicture} alt="profile" />
+                <AvatarFallback className="bg-gradient-to-br from-primary to-accent text-white text-sm">
+                  {user?.userName?.charAt(0)?.toUpperCase()}
+                </AvatarFallback>
+              </Avatar>
+            </Link>
+            
+            <div className="flex-1 min-w-0">
+              <Link
+                to={`/profile/${user?._id}`}
+                className="font-semibold text-sm text-foreground hover:text-primary transition-colors block truncate"
+              >
+                {user?.userName}
               </Link>
-              <div>
-                <h1 className="font-semibold text-sm">
-                  <Link to={`/profile/${user?._id}`}>{user?.userName}</Link>
-                </h1>
-                <span className="text-gray-600 text-sm">
-                  {user?.bio || "Bio here ..."}
-                </span>
-              </div>
+              <p className="text-muted-foreground text-xs truncate">
+                {user?.bio || "New to BIT-MITRA"}
+              </p>
             </div>
-            <span className="text-[#3BADF8] font-bold cursor-pointer hover:text-[#349ce1]">Follow</span>
+            
+            <button className="text-xs font-bold text-primary hover:text-primary-hover transition-colors shrink-0">
+              Follow
+            </button>
           </div>
-        );
-      })}
+        ))}
+      </div>
+
+      {/* Empty State */}
+      {(!suggestedUsers || suggestedUsers.length === 0) && (
+        <p className="text-sm text-muted-foreground text-center py-4">
+          No suggestions available
+        </p>
+      )}
     </div>
   );
 }

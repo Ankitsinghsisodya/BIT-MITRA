@@ -1,8 +1,7 @@
 import { setPosts, setSelectedPost } from "@/redux/postSlice";
 import axios from "axios";
-import { Bookmark, MessageCircle, MoreHorizontal, Send } from "lucide-react";
+import { Bookmark, Heart, MessageCircle, MoreHorizontal, Send } from "lucide-react";
 import { useState } from "react";
-import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "sonner";
 import CommentDialog from "./CommentDialog";
@@ -19,6 +18,7 @@ const Post = ({ post }) => {
   const [liked, setLiked] = useState(post.likes.includes(user?._id) || false);
   const [postLike, setPostLike] = useState(post.likes.length);
   const [comment, setComment] = useState(post.comments);
+  const [isLikeAnimating, setIsLikeAnimating] = useState(false);
   const dispatch = useDispatch();
 
   const changeEventHandler = (e) => {
@@ -33,17 +33,22 @@ const Post = ({ post }) => {
   const likeOrDislikeHandler = async () => {
     try {
       const action = liked ? "dislike" : "like";
+      
+      // Trigger animation
+      if (!liked) {
+        setIsLikeAnimating(true);
+        setTimeout(() => setIsLikeAnimating(false), 300);
+      }
+      
       const res = await axios.get(
         `https://bit-mitra.onrender.com/api/v1/post/${post?._id}/${action}`,
         { withCredentials: true }
       );
-      console.log(res.data);
       if (res.data.success) {
         const updatedLikes = liked ? postLike - 1 : postLike + 1;
         setPostLike(updatedLikes);
         setLiked(!liked);
 
-        // apne post ko update krunga
         const updatedPostData = posts.map((p) =>
           p?._id === post?._id
             ? {
@@ -74,7 +79,6 @@ const Post = ({ post }) => {
           withCredentials: true,
         }
       );
-      console.log(res.data);
       if (res.data.success) {
         const updatedCommentData = [...comment, res.data.comment];
         setComment(updatedCommentData);
@@ -124,121 +128,163 @@ const Post = ({ post }) => {
       console.log(error);
     }
   };
+
   return (
-    <div className="my-8 w-full max-w-sm mx-auto">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <Avatar>
-            <AvatarImage src={post.author?.profilePicture} alt="post_image" />
-            <AvatarFallback>CN</AvatarFallback>
+    <article className="post-card animate-fade-in">
+      {/* Header */}
+      <div className="flex items-center justify-between p-4">
+        <div className="flex items-center gap-3">
+          <Avatar className="w-10 h-10 ring-2 ring-primary/20 ring-offset-2 ring-offset-background">
+            <AvatarImage src={post.author?.profilePicture} alt="profile" />
+            <AvatarFallback className="bg-gradient-to-br from-primary to-accent text-white">
+              {post.author?.userName?.charAt(0)?.toUpperCase()}
+            </AvatarFallback>
           </Avatar>
-          <div className="flex items-center gap-3">
-            <h1>{post.author?.userName}</h1>
-            {user?._id === post.author?._id && (
-              <Badge variant="secondary">Author</Badge>
-            )}
+          <div className="flex flex-col">
+            <div className="flex items-center gap-2">
+              <span className="font-semibold text-sm text-foreground hover:text-primary cursor-pointer transition-colors">
+                {post.author?.userName}
+              </span>
+              {user?._id === post.author?._id && (
+                <Badge variant="secondary" className="text-xs px-2 py-0">
+                  Author
+                </Badge>
+              )}
+            </div>
           </div>
         </div>
+        
         <Dialog>
           <DialogTrigger asChild>
-            <MoreHorizontal className="cursor-pointer" />
+            <button className="p-2 rounded-full hover:bg-secondary transition-colors">
+              <MoreHorizontal className="w-5 h-5 text-muted-foreground" />
+            </button>
           </DialogTrigger>
-          <DialogContent className="flex flex-col items-center text-sm text-center">
-            {post?.author?._id !== user?._id && (
-              <Button
-                variant="ghost"
-                className="cursor-pointer w-fit text-[#ED4956] font-bold"
-              >
-                Unfollow
+          <DialogContent className="glass rounded-2xl max-w-sm">
+            <div className="flex flex-col divide-y divide-border">
+              {post?.author?._id !== user?._id && (
+                <Button
+                  variant="ghost"
+                  className="justify-center py-4 text-error font-semibold hover:bg-error/10"
+                >
+                  Unfollow
+                </Button>
+              )}
+              <Button variant="ghost" className="justify-center py-4">
+                Add to favorites
               </Button>
-            )}
-
-            <Button variant="ghost" className="cursor-pointer w-fit">
-              Add to favorites
-            </Button>
-            {user && user?._id === post?.author?._id && (
-              <Button
-                onClick={deletePostHandler}
-                variant="ghost"
-                className="cursor-pointer w-fit"
-              >
-                Delete
+              {user && user?._id === post?.author?._id && (
+                <Button
+                  onClick={deletePostHandler}
+                  variant="ghost"
+                  className="justify-center py-4 text-error hover:bg-error/10"
+                >
+                  Delete
+                </Button>
+              )}
+              <Button variant="ghost" className="justify-center py-4">
+                Cancel
               </Button>
-            )}
+            </div>
           </DialogContent>
         </Dialog>
       </div>
-      <img
-        className="rounded-sm my-2 w-full aspect-square object-cover"
-        src={post.image}
-        alt="post_img"
-      />
 
-      <div className="flex items-center justify-between my-2">
-        <div className="flex items-center gap-3">
-          {liked ? (
-            <FaHeart
-              onClick={likeOrDislikeHandler}
-              size={"24"}
-              className="cursor-pointer text-red-600"
-            />
-          ) : (
-            <FaRegHeart
-              onClick={likeOrDislikeHandler}
-              size={"22px"}
-              className="cursor-pointer hover:text-gray-600"
-            />
-          )}
+      {/* Image */}
+      <div className="relative bg-secondary/30">
+        <img
+          className="w-full aspect-square object-cover"
+          src={post.image}
+          alt="post"
+          loading="lazy"
+        />
+      </div>
 
-          <MessageCircle
+      {/* Actions */}
+      <div className="p-4 space-y-3">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <button
+              onClick={likeOrDislikeHandler}
+              className={`transition-transform duration-200 hover:scale-110 ${isLikeAnimating ? 'animate-heart-pop' : ''}`}
+            >
+              {liked ? (
+                <Heart className="w-6 h-6 fill-error text-error" />
+              ) : (
+                <Heart className="w-6 h-6 text-foreground hover:text-muted-foreground" />
+              )}
+            </button>
+
+            <button
+              onClick={() => {
+                dispatch(setSelectedPost(post));
+                setOpen(true);
+              }}
+              className="transition-transform duration-200 hover:scale-110"
+            >
+              <MessageCircle className="w-6 h-6 text-foreground hover:text-muted-foreground" />
+            </button>
+            
+            <button className="transition-transform duration-200 hover:scale-110">
+              <Send className="w-6 h-6 text-foreground hover:text-muted-foreground" />
+            </button>
+          </div>
+          
+          <button
+            onClick={bookmarkHandler}
+            className="transition-transform duration-200 hover:scale-110"
+          >
+            <Bookmark className="w-6 h-6 text-foreground hover:text-muted-foreground" />
+          </button>
+        </div>
+
+        {/* Likes */}
+        <p className="font-semibold text-sm">{postLike.toLocaleString()} likes</p>
+
+        {/* Caption */}
+        <p className="text-sm">
+          <span className="font-semibold mr-2 hover:text-primary cursor-pointer transition-colors">
+            {post.author?.userName}
+          </span>
+          <span className="text-foreground/90">{post.caption}</span>
+        </p>
+
+        {/* View Comments */}
+        {comment.length > 0 && (
+          <button
             onClick={() => {
               dispatch(setSelectedPost(post));
               setOpen(true);
             }}
-            className="cursor-pointer hover:text-gray-600"
-          />
-          <Send className="cursor-pointer hover:text-gray-600" />
-        </div>
-        <Bookmark
-          onClick={bookmarkHandler}
-          className="cursor-pointer hover:text-gray-600"
-        />
-      </div>
-      <span className="font-medium block mb-2">{postLike} likes</span>
-      <p>
-        <span className="font-medium mr-2">{post.author?.userName}</span>
-        {post.caption}
-      </p>
-      {comment.length > 0 && (
-        <span
-          onClick={() => {
-            dispatch(setSelectedPost(post));
-            setOpen(true);
-          }}
-          className="cursor-pointer text-sm text-gray-400"
-        >
-          View all {comment.length} comments
-        </span>
-      )}
-      <CommentDialog open={open} setOpen={setOpen} />
-      <div className="flex items-center justify-between">
-        <input
-          type="text"
-          placeholder="Add a comment..."
-          value={text}
-          onChange={changeEventHandler}
-          className="outline-none text-sm w-full"
-        />
-        {text && (
-          <span
-            onClick={commentHandler}
-            className="text-[#3BADF8] cursor-pointer"
+            className="text-sm text-muted-foreground hover:text-foreground transition-colors"
           >
-            Post
-          </span>
+            View all {comment.length} comments
+          </button>
         )}
+
+        {/* Comment Dialog */}
+        <CommentDialog open={open} setOpen={setOpen} />
+
+        {/* Add Comment */}
+        <div className="flex items-center gap-3 pt-2 border-t border-border/50">
+          <input
+            type="text"
+            placeholder="Add a comment..."
+            value={text}
+            onChange={changeEventHandler}
+            className="flex-1 text-sm bg-transparent outline-none placeholder:text-muted-foreground"
+          />
+          {text && (
+            <button
+              onClick={commentHandler}
+              className="text-sm font-semibold text-primary hover:text-primary-hover transition-colors"
+            >
+              Post
+            </button>
+          )}
+        </div>
       </div>
-    </div>
+    </article>
   );
 };
 
