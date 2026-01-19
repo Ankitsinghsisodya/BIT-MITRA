@@ -1,0 +1,1 @@
+"""BIT-MITRA FastAPI Backend"""
